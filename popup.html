@@ -2,17 +2,53 @@
 <html>
 <head>
     <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="https://use.typekit.net/six2mni.css">
 </head>
 <body>
-<select id="cardOptions">
+<select id="cardOptions" class="input">
     <option value="mercury-gift">Mercury Gift</option>
     <option value="emagine-gift">Emagine Gift</option>
     <option value="spoton-loyalty">SpotOn Loyalty</option>
     <option id="dishout-gift">Dishout Gift</option>
     <option id="dineloyal-loyalty">Dineloyal Loyalty</option>
 </select>
-<input id="card-number" />
-<button id="submit-swipe">Swipe</button>
+<input id="card-number"  class="input"/>
+<button id="submit-swipe" class="button">Swipe</button>
 <script src="popup.js"></script>
 </body>
 </html>
+<style type="text/css">
+    body {
+        border-top: 6px solid #1564F1;
+        display: flex;
+        flex-direction: column;
+        /*width: 30%;*/
+        font-family: sofia-pro, sans-serif;
+        font-weight: 300;
+    }
+
+    .input {
+        border: 1px solid #77829C;
+        border-radius: 6px;
+        margin: 1rem;
+        padding: .5rem;
+        font-family: sofia-pro, sans-serif;
+        font-weight: 300;
+    }
+
+    .button {
+        outline: none;
+        border: none;
+        background: #1564F1;
+        color: #ffffff;
+        font-size: 16px;
+        padding: .5rem 1rem;
+        margin: 1rem;
+        width: 20%;
+        border-radius: 6px;
+        align-self: flex-end;
+        cursor: pointer;
+        font-family: sofia-pro, sans-serif;
+        font-weight: 300;
+    }
+</style>
