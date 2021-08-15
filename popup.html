@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="button.css">
     <link rel="stylesheet" href="https://use.typekit.net/six2mni.css">
 </head>
 <body>
@@ -9,12 +8,15 @@
     <option value="mercury-gift">Mercury Gift</option>
     <option value="emagine-gift">Emagine Gift</option>
     <option value="spoton-loyalty">SpotOn Loyalty</option>
-    <option id="dishout-gift">Dishout Gift</option>
-    <option id="dineloyal-loyalty">Dineloyal Loyalty</option>
+    <option value="dishout-gift">Dishout Gift</option>
+    <option value="dineloyal-loyalty">Dineloyal Loyalty</option>
 </select>
 <input id="card-number"  class="input"/>
-<button id="submit-swipe" class="button">Swipe</button>
+<div class="buttons">
+    <button id="submit-swipe" class="button">Swipe</button>
+    <button id="submit-scan" class="button">Scan</button>
 <script src="popup.js"></script>
+</div>
 </body>
 </html>
 <style type="text/css">
@@ -44,11 +46,14 @@
         font-size: 16px;
         padding: .5rem 1rem;
         margin: 1rem;
-        width: 20%;
         border-radius: 6px;
-        align-self: flex-end;
+        align-self: flex-start;
         cursor: pointer;
         font-family: sofia-pro, sans-serif;
         font-weight: 300;
+    }
+
+    .buttons {
+        display: flex;
     }
 </style>
