@@ -1,5 +1,6 @@
 // Initialize button with user's preferred color
 let submitSwipeBtn = document.getElementById("submit-swipe");
+let submitScanBtn = document.getElementById("submit-scan");
 let cardOptions = document.getElementById("cardOptions");
 let cardNumberInput = document.getElementById("card-number");
 
@@ -23,6 +24,10 @@ function swipeSpoton(cardNumber) {
     swipe(`%SOLOYALTY:${cardNumber}?`);
 }
 
+function scanSpoton(cardNumber) {
+    swipe(`^{c:${cardNumber},t:'030b04f3520b0ea13008bef0dc063d3'}`);
+}
+
 function swipeEmagine(cardNumber) {
     swipe(`;${cardNumber}?`);
 }
@@ -43,7 +48,6 @@ async function swipe(code) {
     }, function () {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            // code: 'var config = ' + JSON.stringify(code),
             function: function() {
                 chrome.storage.local.get(['code'], function(result) {
                     let typeKey = function(key, code, keyCode) {
@@ -80,7 +84,6 @@ function getDefaultCardNumber(cardType) {
     }
 }
 
-// When the button is clicked, inject setPageBackgroundColor into current page
 submitSwipeBtn.addEventListener("click", async () => {
     switch(cardOptions.value) {
         case 'mercury-gift':
@@ -97,5 +100,24 @@ submitSwipeBtn.addEventListener("click", async () => {
             break;
         case 'dineloyal-loyalty':
             swipeDineLoyalLoyalty(cardNumberInput.value);
+    }
+});
+
+submitScanBtn.addEventListener("click", async () => {
+    switch(cardOptions.value) {
+        case 'mercury-gift':
+            // scanMercury(cardNumberInput.value);
+            break;
+        case 'emagine-gift':
+            // scanEmagine(cardNumberInput.value);
+            break;
+        case 'spoton-loyalty':
+            scanSpoton(cardNumberInput.value);
+            break;
+        case 'dishout-gift':
+            // scanDishout(cardNumberInput.value);
+            break;
+        case 'dineloyal-loyalty':
+            // scanDineLoyalLoyalty(cardNumberInput.value);
     }
 });
