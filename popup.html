@@ -68,18 +68,17 @@
     .button:hover {
         background: #145CD9;
         transition: all .2s ease-in-out;
+        cursor: pointer;
     }
 
     .clicked {
-        animation: ripple .4s ease-in-out;
+        animation: ripple .4s ease-in-out forwards;
     }
 
     @keyframes ripple {
         0% {
-            background: #145CD9;
-        }
-        100% {
-            background: #0A3173;
+            background: #0E4199;
+            color: #3d3d3d;
         }
     }
 

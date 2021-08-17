@@ -102,11 +102,9 @@ submitSwipeBtn.addEventListener("click", async () => {
             swipeDineLoyalLoyalty(cardNumberInput.value);
     }
     submitSwipeBtn.classList.add('clicked');
-    // window.setTimeout( removeClass, 8);
+    window.setTimeout( () => { removeClass(submitSwipeBtn) }, 1500);
 });
-// function removeClass(){
-//     submitSwipeBtn.classList.add('clicked');
-// }
+
 submitScanBtn.addEventListener("click", async () => {
     switch(cardOptions.value) {
         case 'mercury-gift':
@@ -124,4 +122,10 @@ submitScanBtn.addEventListener("click", async () => {
         case 'dineloyal-loyalty':
             // scanDineLoyalLoyalty(cardNumberInput.value);
     }
+    submitScanBtn.classList.add('clicked');
+    window.setTimeout( () => { removeClass(submitScanBtn) }, 1500);
 });
+
+function removeClass(button){
+    button.classList.remove('clicked');
+}
