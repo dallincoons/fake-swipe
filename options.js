@@ -38,7 +38,6 @@ function constructOptions(cardOptions) {
         //     // …and register a listener for when that button is clicked
         //     button.addEventListener("click", handleButtonClick);
         //     page.appendChild(button);
-        }
     });
 }
 

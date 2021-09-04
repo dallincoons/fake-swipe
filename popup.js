@@ -4,84 +4,109 @@ let submitScanBtn = document.getElementById("submit-scan");
 let cardOptions = document.getElementById("cardOptions");
 let cardNumberInput = document.getElementById("card-number");
 
-cardOptions.onchange = function() {
-    loadCardNumber(this.value);
+cardOptions.onchange = async function() {
+    await loadCardNumber(this.value);
 };
 
-window.onload=function(){
-    loadCardNumber(cardOptions.value);
+window.onload = async function(){
+    await loadCardNumber(cardOptions.value);
 };
 
-function loadCardNumber(cardType) {
-    cardNumberInput.value = getDefaultCardNumber(cardType);
+async function loadCardNumber(cardType) {
+    cardNumberInput.value = await getDefaultCardNumber(cardType);
 }
 
 function swipeMercury(cardNumber) {
-    swipe(cardNumber);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(cardNumber);
+    });
 }
 
 function swipeSpoton(cardNumber) {
-    swipe(`%SOLOYALTY:${cardNumber}?`);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(`%SOLOYALTY:${cardNumber}?`);
+    });
 }
 
 function scanSpoton(cardNumber) {
-    swipe(`^{c:${cardNumber},t:'030b04f3520b0ea13008bef0dc063d3'}`);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(`^{c:${cardNumber},t:'030b04f3520b0ea13008bef0dc063d3'}`);
+    });
 }
 
 function swipeEmagine(cardNumber) {
-    swipe(`;${cardNumber}?`);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(`;${cardNumber}?`);
+    });
 }
 
 function swipeDishout(cardNumber) {
-    swipe(`;${cardNumber}?`);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(`;${cardNumber}?`);
+    });
 }
 
 function swipeDineLoyalLoyalty(cardNumber) {
-    swipe(`;${cardNumber}?`);
+    chrome.storage.local.set({
+        cardNumber: cardNumber,
+    }, function () {
+        swipe(`;${cardNumber}?`);
+    });
 }
 
 async function swipe(code) {
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    chrome.storage.local.set({
-        code: code,
-    }, function () {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: function() {
-                chrome.storage.local.get(['code'], function(result) {
-                    let typeKey = function(key, code, keyCode) {
-                        var evt = new KeyboardEvent("keydown", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
-                        var evtp = new KeyboardEvent("keypress", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
-                        document.body.dispatchEvent(evt)
-                        document.body.dispatchEvent(evtp)
-                    }
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: function() {
+            let typeKey = function(key, code, keyCode) {
+                var evt = new KeyboardEvent("keydown", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
+                var evtp = new KeyboardEvent("keypress", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
+                document.body.dispatchEvent(evt)
+                document.body.dispatchEvent(evtp)
+            };
 
-                    result.code.split('').forEach((c) => {
-                        typeKey(c);
-                    })
-                    typeKey("",  "Enter", 13);
-                });
-            },
-        });
+            code.split('').forEach((c) => {
+                typeKey(c);
+            });
+            typeKey("",  "Enter", 13);
+        },
     });
 }
 
-function getDefaultCardNumber(cardType) {
-    switch(cardType) {
-    //     case 'mercury-gift':
-    //         return '12345';
-    //     case 'emagine-gift':
-    //         return '2222';
-    //     case 'spoton-loyalty':
-    //         return '3333';
-        case 'dishout-gift':
-            return '7000123456789123';
-    //     case 'dineloyal-loyalty':
-    //         return '5555';
-        default:
-            return '12345';
-    }
+async function getDefaultCardNumber(cardType) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['cardNumber'], function (result) {
+            if (result.cardNumber !== undefined) {
+                return resolve(result.cardNumber);
+            }
+            switch (cardType) {
+                //     case 'mercury-gift':
+                //         return '12345';
+                //     case 'emagine-gift':
+                //         return '2222';
+                //     case 'spoton-loyalty':
+                //         return '3333';
+                case 'dishout-gift':
+                    return '7000123456789123';
+                //     case 'dineloyal-loyalty':
+                //         return '5555';
+                default:
+                    return '12345';
+            }
+        });
+    });
 }
 
 submitSwipeBtn.addEventListener("click", async () => {
