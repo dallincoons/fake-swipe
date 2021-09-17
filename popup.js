@@ -69,7 +69,8 @@ async function swipe(code) {
 
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        function: function() {
+        args: [code],
+        function: function(code) {
             let typeKey = function(key, code, keyCode) {
                 var evt = new KeyboardEvent("keydown", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
                 var evtp = new KeyboardEvent("keypress", {key: key, code: code, keyCode: keyCode, which: keyCode, shiftKey: false, bubbles: true})
