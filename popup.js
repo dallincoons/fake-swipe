@@ -9,8 +9,20 @@ cardOptions.onchange = async function() {
 };
 
 window.onload = async function(){
+    await selectCardType()
     await loadCardNumber(cardOptions.value);
 };
+
+async function selectCardType() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['cardType'], function (result) {
+            if (result.cardType !== undefined) {
+                cardOptions.value = result.cardType;
+                resolve(result.cardType);
+            }
+        });
+    });
+}
 
 async function loadCardNumber(cardType) {
     cardNumberInput.value = await getDefaultCardNumber(cardType);
@@ -19,6 +31,7 @@ async function loadCardNumber(cardType) {
 function swipeMercury(cardNumber) {
     chrome.storage.local.set({
         cardNumber: cardNumber,
+        cardType: 'mercury-gift',
     }, function () {
         swipe(cardNumber);
     });
@@ -27,6 +40,7 @@ function swipeMercury(cardNumber) {
 function swipeSpoton(cardNumber) {
     chrome.storage.local.set({
         cardNumber: cardNumber,
+        cardType: 'spoton-loyalty',
     }, function () {
         swipe(`%SOLOYALTY:${cardNumber}?`);
     });
@@ -40,9 +54,14 @@ function scanSpoton(cardNumber) {
     });
 }
 
+function scanBarcode(barcode) {
+    swipe(`^${barcode}`);
+}
+
 function swipeEmagine(cardNumber) {
     chrome.storage.local.set({
         cardNumber: cardNumber,
+        cardType: 'emagine-gift',
     }, function () {
         swipe(`;${cardNumber}?`);
     });
@@ -51,6 +70,7 @@ function swipeEmagine(cardNumber) {
 function swipeDishout(cardNumber) {
     chrome.storage.local.set({
         cardNumber: cardNumber,
+        cardType: 'dishout-gift',
     }, function () {
         swipe(`;${cardNumber}?`);
     });
@@ -59,8 +79,18 @@ function swipeDishout(cardNumber) {
 function swipeDineLoyalLoyalty(cardNumber) {
     chrome.storage.local.set({
         cardNumber: cardNumber,
+        cardType: 'dineloyal-loyalty',
     }, function () {
         swipe(`;${cardNumber}?`);
+    });
+}
+
+function swipeBarcode(barcode) {
+    chrome.storage.local.set({
+        cardNumber: barcode,
+        cardType: 'barcode',
+    }, function () {
+        swipe(`^${barcode}`);
     });
 }
 
@@ -93,16 +123,8 @@ async function getDefaultCardNumber(cardType) {
                 return resolve(result.cardNumber);
             }
             switch (cardType) {
-                //     case 'mercury-gift':
-                //         return '12345';
-                //     case 'emagine-gift':
-                //         return '2222';
-                //     case 'spoton-loyalty':
-                //         return '3333';
                 case 'dishout-gift':
                     return '7000123456789123';
-                //     case 'dineloyal-loyalty':
-                //         return '5555';
                 default:
                     return '12345';
             }
@@ -126,6 +148,10 @@ submitSwipeBtn.addEventListener("click", async () => {
             break;
         case 'dineloyal-loyalty':
             swipeDineLoyalLoyalty(cardNumberInput.value);
+            break;
+        case 'barcode':
+            swipeBarcode(cardNumberInput.value);
+            break;
     }
     submitSwipeBtn.classList.add('clicked');
     window.setTimeout( () => { removeClass(submitSwipeBtn) }, 1500);
@@ -134,19 +160,18 @@ submitSwipeBtn.addEventListener("click", async () => {
 submitScanBtn.addEventListener("click", async () => {
     switch(cardOptions.value) {
         case 'mercury-gift':
-            // scanMercury(cardNumberInput.value);
             break;
         case 'emagine-gift':
-            // scanEmagine(cardNumberInput.value);
             break;
         case 'spoton-loyalty':
             scanSpoton(cardNumberInput.value);
             break;
         case 'dishout-gift':
-            // scanDishout(cardNumberInput.value);
             break;
         case 'dineloyal-loyalty':
-            // scanDineLoyalLoyalty(cardNumberInput.value);
+            break;
+        case 'barcode':
+            scanBarcode(cardNumberInput.value)
     }
     submitScanBtn.classList.add('clicked');
     window.setTimeout( () => { removeClass(submitScanBtn) }, 1500);
