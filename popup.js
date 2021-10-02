@@ -33,7 +33,7 @@ function swipeMercury(cardNumber) {
         cardNumber: cardNumber,
         cardType: 'mercury-gift',
     }, function () {
-        swipe(cardNumber);
+        swipe(`;1234=1234abc${cardNumber}?`);
     });
 }
 
