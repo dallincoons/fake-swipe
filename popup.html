@@ -12,7 +12,11 @@
     <option value="dineloyal-loyalty">Dineloyal Loyalty</option>
     <option value="barcode">Barcode</option>
 </select>
-<input id="card-number"  class="input"/>
+
+<div style="display:flex">
+<input id="mercury-prefix"  class="input mercury"/>
+<input id="card-number"  class="input constant"/>
+</div>
 
 <div class="buttons">
     <button id="submit-swipe" class="button button-1">Swipe</button>
@@ -41,6 +45,12 @@
         padding: .5rem;
         font-family: sofia-pro, sans-serif;
         font-weight: 300;
+    }
+    .mercury {
+        width: 65px;
+    }
+    .constant {
+        width: 100%;
     }
     .input-1 {
         margin-bottom: 0;
@@ -74,6 +84,14 @@
 
     .clicked {
         animation: ripple .4s ease-in-out forwards;
+    }
+
+    .disabled {
+        background: #918c8c;
+    }
+
+    .disabled:hover {
+        background: #918c8c;
     }
 
     @keyframes ripple {
